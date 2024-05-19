@@ -24,8 +24,8 @@
         <div class="container-xl px-4 mt-4">
             <!-- Account page navigation-->
             <nav class="nav nav-borders">
-                <a class="nav-link" href="">Profile</a>
-                <a class="nav-link" href="">Ubah Password</a>
+                <a class="nav-link {{ (request()->is('admin/setting')) ? 'active ms-0' : '' }}" href="{{ route('setting.index') }}">Profile</a>
+                <a class="nav-link {{ (request()->is('admin/setting/change-password')) ? 'active ms-0' : '' }}" href="{{ route('change-password') }}">Ubah Password</a>
             </nav>
             <hr class="mt-0 mb-4" />
             <div class="row">
@@ -35,25 +35,32 @@
                         <div class="card-header">Profile Picture</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
-                            <img class="img-account-profile rounded-circle mb-2" src="https://ui-avatars.com/api/?name=User" alt="" />
+                            @if ($user->profile != NULL)
+                                <img class="img-account-profile rounded-circle mb-2" src="{{ Storage::url($user->profile) }}" alt="" />
+                            @else
+                                <img class="img-account-profile rounded-circle mb-2" src="https://ui-avatars.com/api/?name={{ $user->name }}" alt="" />
+                            @endif
                             <!-- Profile picture help block-->
                             <div class="small font-italic text-muted mb-4">JPG atau PNG tidak lebih besar dari 1 MB</div>
                             <!-- Profile picture upload button-->
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('profile-upload') }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="id" value="">
+                            <input type="hidden" name="id" value="{{ $user->id }}">
                                 <input
                                   type="file"
                                   id="profile"
                                   name="profile"
                                   style="display: none;"
+                                  onchange="form.submit()"
                                 />    
                                 <button class="btn btn-primary btn-sm" type="button" onclick="thisFileUpload();">
                                     <i data-feather="upload"></i> &nbsp; Unggah
                                 </button>
-                                <a href="" class="btn btn-danger btn-sm" id="profile-delete">
-                                    <i data-feather="trash"></i> &nbsp; Hapus
-                                </a>  
+                                @if ($user->profile != NULL)
+                                    <a href="{{ route('profile-delete', $user->id) }}" class="btn btn-danger btn-sm" id="profile-delete">
+                                        <i data-feather="trash"></i> &nbsp; Hapus
+                                    </a>  
+                                @endif
                             </form>
                         </div>
                     </div>
@@ -63,14 +70,23 @@
                     <div class="card mb-4">
                         <div class="card-header">Informasi Akun</div>
                         <div class="card-body">
-                            <form action="" method="POST">
+                            {{-- Alert --}}
+                            @if (session()->has('success'))
+                                <div class="alert alert-success alert-dismissible fade show hide-alert" role="alert">
+                                    {{ session('success') }}
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            <form action="{{ route('setting.update', $user->id) }}" method="POST" autocomplete="off">
+                                @csrf
+                                @method('PUT')
                                 <div class="mb-3">
                                     <label class="small mb-1" for="name">Nama</label>
-                                    <input class="form-control" name="name" type="text" value="" required/>
+                                    <input class="form-control" name="name" type="text" value="{{ $user->name }}" required/>
                                 </div>
                                 <div class="mb-3">
                                     <label class="small mb-1" for="email">Email</label>
-                                    <input class="form-control" name="email" type="email" placeholder="name@example.com" value="" required/>
+                                    <input class="form-control" name="email" type="email" placeholder="name@example.com" value="{{ $user->email }}" required/>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Perbarui Profil</button>
                             </form>
@@ -81,5 +97,41 @@
         </div>
     </main>
 @endsection
+
+@push('addon-script')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const thisFileUpload = () => {
+            document.getElementById("profile").click();
+        }
+
+        $('#profile-delete').click(function(e) {
+            e.preventDefault();
+            const href = $(this).attr('href');
+
+            Swal.fire({
+                title: 'Apakah anda yakin?',
+                text: "Data akan dihapus secara permanen !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.value) {
+                    document.location.href = href;
+                }
+            })
+        })
+
+        window.setTimeout(() => {
+            $(".hide-alert").fadeTo(500, 0).slideUp(300, () => {
+                $(this).remove(); 
+            });
+        }, 4000);
+    </script> 
+@endpush
 
 

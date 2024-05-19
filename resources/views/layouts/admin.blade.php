@@ -20,7 +20,11 @@
         @include('includes.navbar-admin')
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
-                @include('includes.sidebar-admin')
+                @if (Auth::user() && Auth::user()->role_id == '1')
+                    @include('includes.sidebar-admin')
+                @elseif(Auth::user() && Auth::user()->role_id == '2')
+                    @include('includes.sidebar-user')                       
+                @endif
             </div>
             <div id="layoutSidenav_content">
                 @yield('container')

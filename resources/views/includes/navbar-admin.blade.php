@@ -4,10 +4,7 @@
         <i data-feather="menu"></i>
     </button>
     <!-- Navbar Brand-->
-    <!-- * * Tip * * You can use text or an image for your navbar brand.-->
-    <!-- * * * * * * When using an image, we recommend the SVG format.-->
-    <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
-    <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="">
+    <a class="navbar-brand pe-3 ps-4 ps-lg-2" href="{{ route('admin-dashboard') }}">
         E-Presensi
     </a>
     <!-- Navbar Search Input-->
@@ -26,17 +23,25 @@
         <li class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
             <div class="dropdown-toggle" id="navbarDropdownUserImage" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <a class="btn btn-icon btn-transparent-dark" href="javascript:void(0);" style="margin-right: 5px;">
-                    <img class="img-fluid" src="https://ui-avatars.com/api/?name=User" />
+                    @if (Auth::user()->profile != NULL)
+                        <img class="img-fluid" src="{{ Storage::url(Auth::user()->profile) }}" />
+                    @else
+                        <img class="img-fluid" src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" />
+                    @endif
                 </a>
-                <div class="fw-500">Nama User</div>
+                <div class="fw-500">{{ Auth::user()->name}}</div>
             </div>
             <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                 <h6 class="dropdown-header d-flex align-items-center">
-                    <img class="dropdown-user-img" src="https://ui-avatars.com/api/?name=Agun" />
+                    @if (Auth::user()->profile != NULL)
+                        <img class="dropdown-user-img" src="{{ Storage::url(Auth::user()->profile) }}" />
+                    @else
+                        <img class="dropdown-user-img" src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" />
+                    @endif
 
                     <div class="dropdown-user-details">
-                        <div class="dropdown-user-details-name">Nama User</div>
-                        <div class="dropdown-user-details-email">Email User</div>
+                        <div class="dropdown-user-details-name">{{ Auth::user()->name }}</div>
+                        <div class="dropdown-user-details-email">{{ Auth::user()->email }}</div>
                     </div>
                 </h6>
                 <div class="dropdown-divider"></div>
