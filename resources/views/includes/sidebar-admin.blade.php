@@ -9,15 +9,19 @@
                 <div class="nav-link-icon"><i data-feather="activity"></i></div>
                 Dashboard
             </a>
+            <a class="nav-link  {{ (request()->is('admin/presensi*')) ? 'active' : '' }}" href="{{ route('presensi.index') }}">
+                <div class="nav-link-icon"><i data-feather="clock"></i></div>
+                Data Absensi
+            </a>
             <a class="nav-link  {{ (request()->is('admin/instansi*')) ? 'active' : '' }}" href="{{ route('instansi.index') }}">
                 <div class="nav-link-icon"><i data-feather="briefcase"></i></div>
                 Data Instansi
             </a>
-            <a class="nav-link  {{ (request()->is('admin/user*')) ? 'active' : '' }}" href="/admin/user">
+            <a class="nav-link  {{ (request()->is('admin/user*')) ? 'active' : '' }}" href="{{ route('user.index') }}">
                 <div class="nav-link-icon"><i data-feather="users"></i></div>
                 Data User
             </a>
-            <a class="nav-link  {{ (request()->is('admin/report*')) ? 'active' : '' }}" href="/admin/report">
+            <a class="nav-link  {{ (request()->is('admin/report*')) ? 'active' : '' }}" href="{{ route('report.index') }}">
                 <div class="nav-link-icon"><i data-feather="file-text"></i></div>
                 Laporan
             </a>

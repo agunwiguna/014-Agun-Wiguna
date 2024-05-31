@@ -36,7 +36,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-8 col-xxl-12">
                                     <div class="text-center text-xl-start text-xxl-center mb-4 mb-xl-0 mb-xxl-4">
-                                        <h1 class="text-primary">Selamat Datang Nama User!</h1>
+                                        <h1 class="text-primary">Selamat Datang {{ Auth::user()->name }}!</h1>
                                         <p class="text-gray-700 mb-0">Di Website Presensi Online</p>
                                     </div>
                                 </div>
@@ -47,36 +47,70 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 col-xl-6 mb-4">
+                <div class="col-lg-12 col-xl-3 mb-4">
                     <div class="card bg-primary text-white h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
                                     <div class="text-white-75 small">Total User</div>
-                                    <div class="text-lg fw-bold">0</div>
+                                    <div class="text-lg fw-bold">{{ $user }}</div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="users"></i>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="">Selengkapnya</a>
+                            <a class="text-white stretched-link" href="{{ route('user.index') }}">Selengkapnya</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-xl-6 mb-4">
-                    <div class="card bg-warning text-white h-100">
+                <div class="col-lg-12 col-xl-3 mb-4">
+                    <div class="card bg-success text-white h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
                                     <div class="text-white-75 small">Kehadiran Hari Ini</div>
-                                    <div class="text-lg fw-bold">0</div>
+                                    <div class="text-lg fw-bold">{{ $hadir }}</div>
+                                </div>
+                                <i class="feather-xl text-white-50" data-feather="log-in"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between small">
+                            <a class="text-white stretched-link" href="{{ route('presensi.index') }}">Selengkapnya</a>
+                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-xl-3 mb-4">
+                    <div class="card bg-warning text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="me-3">
+                                    <div class="text-white-75 small">Izin Hari Ini</div>
+                                    <div class="text-lg fw-bold">{{ $izin }}</div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="info"></i>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="">Selengkapnya</a>
+                            <a class="text-white stretched-link" href="{{ route('presensi.index') }}">Selengkapnya</a>
+                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-xl-3 mb-4">
+                    <div class="card bg-danger text-white h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="me-3">
+                                    <div class="text-white-75 small">Sakit Hari Ini</div>
+                                    <div class="text-lg fw-bold">{{ $sakit }}</div>
+                                </div>
+                                <i class="feather-xl text-white-50" data-feather="frown"></i>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between small">
+                            <a class="text-white stretched-link" href="{{ route('presensi.index') }}">Selengkapnya</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -86,48 +120,51 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header">
-                            Daftar Absen Masuk Hari Ini
+                            Daftar Absen Hari Ini
                         </div>
                         <div class="card-body">
                             {{-- List Data --}}
-                            <table class="table table-striped table-hover table-sm" id="myTable">
-                                <thead>
-                                    <tr>
-                                        <th width="10">No.</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Keterangan</th>
-                                        <th>Foto</th>
-                                        <th>Tanggal</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card card-header-actions mb-4">
-                        <div class="card-header">
-                            Daftar Absen Pulang Hari Ini
-                        </div>
-                        <div class="card-body">
-                            {{-- List Data --}}
-                            <table class="table table-striped table-hover table-sm" id="myTable">
-                                <thead>
-                                    <tr>
-                                        <th width="10">No.</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Keterangan</th>
-                                        <th>Foto</th>
-                                        <th>Tanggal</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-sm" id="myTable">
+                                    <thead>
+                                        <tr>
+                                            <th width="10" style="vertical-align: middle;">No.</th>
+                                            <th style="vertical-align: middle;">NIP</th>
+                                            <th style="vertical-align: middle;">Nama</th>
+                                            <th style="vertical-align: middle;">Jabatan</th>
+                                            <th style="vertical-align: middle;">Tanggal</th>
+                                            <th style="vertical-align: middle;">Jam <br> Masuk</th>
+                                            <th style="vertical-align: middle;">Jam <br> Pulang</th>
+                                            <th style="vertical-align: middle;">Keterangan</th>
+                                            <th style="vertical-align: middle;" class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $no = 1;
+                                        @endphp
+                                        @forelse ($in as $row)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $row->user->nip ?? '' }}</td>
+                                                <td>{{ $row->user->name ?? '' }}</td>
+                                                <td>{{ $row->user->position ?? '' }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($row->date)) }}</td>
+                                                <td>{{ $row->entry_time }}</td>
+                                                <td>{{ $row->out_time ?? '-' }}</td>
+                                                <td>{{ $row->description }}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('presensi.show', $row->id) }}">Detail</a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="9" class="text-center">Tidak ada data kehadiran hari ini</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

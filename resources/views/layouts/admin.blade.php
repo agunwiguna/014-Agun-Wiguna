@@ -33,8 +33,10 @@
         </div>
         @stack('prepend-script')
             <script src="{{ url('/admin/js/jquery/jquery.min.js') }}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="{{ url('/admin/js/scripts.js') }}"></script>
+            <script src="{{ url('/admin/js/notification.js') }}"></script>
             <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/datatables.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
             <script src="{{ url('/admin/js/litepicker.js') }}"></script>

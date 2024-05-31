@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="col-md-12">
-                                        <label class="small mb-1" for="longitude">Longitude</label>
+                                        <label class="small mb-1" for="longitude">longitude</label>
                                         <input class="form-control" name="longitude" id="longitude" type="text" value="{{ $instansi->longitude }}"/>
                                     </div>
                                 </div>
@@ -116,13 +116,59 @@
 @push('addon-script')
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        let mymap = L.map('map').setView([{{ $instansi->latitude }}, {{ $instansi->longitude }}], {{ $instansi->radius }}); 
+        // let mymap = L.map('map').setView([{{ $instansi->latitude }}, {{ $instansi->longitude }}], {{ $instansi->radius }}); 
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(mymap);
+        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        // }).addTo(mymap);
 
-        let marker = L.marker([{{ $instansi->latitude }}, {{ $instansi->longitude }}]).addTo(mymap);
+        // let marker = L.marker([{{ $instansi->latitude }}, {{ $instansi->longitude }}]).addTo(mymap);
+        $(function() {
+
+            var curLocation = [0, 0];
+
+            if (curLocation[0] == 0 && curLocation[1] == 0) {
+                curLocation = [{{ $instansi->latitude }}, {{ $instansi->longitude }}];
+            }
+
+            let map = L.map('map').setView([{{ $instansi->latitude }}, {{ $instansi->longitude }}], {{ $instansi->radius }}); 
+
+            var circle = L.circle([{{ $instansi->latitude }}, {{ $instansi->longitude }}], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 50
+            }).addTo(map);
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            map.attributionControl.setPrefix(false);
+
+            var marker = new L.marker(curLocation, {
+                draggable: 'true'
+            });
+
+            marker.on('dragend', function(event) {
+                var position = marker.getLatLng();
+                marker.setLatLng(position, {
+                draggable: 'true'
+                }).bindPopup(position).update();
+                $("#latitude").val(position.lat);
+                $("#longitude").val(position.lng).keyup();
+            });
+
+            $("#latitude, #longitude").change(function() {
+                var position = [parseInt($("#latitude").val()), parseInt($("#longitude").val())];
+                marker.setLatLng(position, {
+                draggable: 'true'
+                }).bindPopup(position).update();
+                map.panTo(position);
+            });
+
+            map.addLayer(marker);
+        })
     </script>
 @endpush
 

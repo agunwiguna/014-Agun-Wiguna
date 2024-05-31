@@ -13,7 +13,7 @@
                         <div class="col-auto mb-3">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon"><i data-feather="clock"></i></div>
-                                Absensi Masuk
+                                Absensi Pulang
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
@@ -40,7 +40,7 @@
                 <div class="col-xl-12">
                     <!-- Account details card-->
                     <div class="card mb-4">
-                        <div class="card-header">Absen Masuk</div>
+                        <div class="card-header">Absen Pulang</div>
                         <div class="card-body">
                             @if (session()->has('success'))
                                 <div class="alert alert-success alert-dismissible fade show hide-alert" role="alert">
@@ -58,78 +58,69 @@
                                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @endif
-                            @if ($cek_absensi == 0)
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-form" style="display: none;">
-                                Anda berada di luar radius yang ditentukan. Anda tidak bisa mengisi absensi.
-                            </div>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-form-success" style="display: none;">
-                                Anda berada di dalam radius yang ditentukan. Anda bisa mengisi absensi.
-                            </div>
-                            <div style="display: block" id="absensi">
-                                <form action="{{ route('absensi.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off" id="form-data">
-                                    @csrf
-                                    @method('POST')
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="name">Nama</label>
-                                            <input class="form-control" name="name" type="text" value="{{ Auth::user()->name }}" readonly/>
+                            @if ($cek_absensi > 0)
+                                @if ($cek_pulang > 0)
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-form" style="display: none;">
+                                    Anda berada di luar radius yang ditentukan. Anda tidak bisa mengisi absensi.
+                                </div>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-form-success" style="display: none;">
+                                    Anda berada di dalam radius yang ditentukan. Anda bisa mengisi absensi.
+                                </div>
+                                <div style="display: block" id="absensi">
+                                    <form action="{{ route('absensi.update', $item->id) }}" method="POST" enctype="multipart/form-data" autocomplete="off" id="form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="name">Nama</label>
+                                                <input class="form-control" name="name" type="text" value="{{ Auth::user()->name }}" readonly/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="gender">Jenis Kelamin</label>
-                                            <input class="form-control" name="gender" type="text" value="{{ Auth::user()->gender }}" readonly/>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="gender">Jenis Kelamin</label>
+                                                <input class="form-control" name="gender" type="text" value="{{ Auth::user()->gender }}" readonly/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="jabatan">Jabatan</label>
-                                            <input class="form-control" name="jabatan" type="text" value="{{ Auth::user()->position }}" readonly/>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="jabatan">Jabatan</label>
+                                                <input class="form-control" name="jabatan" type="text" value="{{ Auth::user()->position }}" readonly/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="latitude">Lattitude</label>
-                                            <input class="form-control" name="latitude" id="latitude" type="text" readonly/>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="latitude">Lattitude</label>
+                                                <input class="form-control" name="latitude" id="latitude" type="text" readonly/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="longitude">Longitude</label>
-                                            <input class="form-control" name="longitude" id="longitude" type="text" readonly/>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="longitude">Longitude</label>
+                                                <input class="form-control" name="longitude" id="longitude" type="text" readonly/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="description">Keterangan</label>
-                                            <input class="form-control" name="description" id="description" value="Hadir" type="text" readonly/>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="out_time">Jam Pulang</label>
+                                                <input class="form-control" name="out_time" id="out_time" value="{{ date('H:i:s') }}" type="text" readonly/>
+                                            </div>
                                         </div>
+                                        <!-- Submit button-->
+                                        <button class="btn btn-primary" type="submit">
+                                            Simpan Absen
+                                        </button>
+                                    </form>
+                                </div>
+                                @else
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Anda sudah mengisi absen hari ini.
+                                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for="">Foto</label> <br>
-                                            <input type="file" id="picture" name="picture" style="display: none;" accept="image/*" capture="environment"/> 
-                                            <button class="btn btn-success" type="button" onclick="thisFileUpload();">
-                                            <i data-feather="camera"></i> &nbsp; Ambil Foto
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row gx-3 mb-3">
-                                        <div class="col-md-6">
-                                            <label class="small mb-1" for=""></label>
-                                            <img id="preview-img" src="/admin/assets/img/empty-image.jpg" class="img-fluid rounded mb-2" alt="Preview Image" style="height: 165px;">
-                                        </div>
-                                    </div>
-
-                                    <!-- Submit button-->
-                                    <button class="btn btn-primary" type="submit">
-                                        Simpan Absen
-                                    </button>
-                                </form>
-                            </div>
+                                @endif
                             @else
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    Anda sudah mengisi absen hari ini.
+                                    Anda belum mengisi absen masuk, silahkan isi absen masuk terlebih dahulu.
                                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @endif
@@ -155,25 +146,6 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.81.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>
     <script>
-        function thisFileUpload() {
-            document.getElementById("picture").click();
-        }
-
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
-
-                reader.onload = function(e) {
-                    $('#preview-img').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]); 
-            }
-        }
-
-        $("#picture").change(function() {
-            readURL(this);
-        });
-
         let mymap = L.map('map').setView([{{ $instansi->latitude }}, {{ $instansi->longitude }}], {{ $instansi->radius }});
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

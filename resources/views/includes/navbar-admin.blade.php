@@ -29,7 +29,6 @@
                         <img class="img-fluid" src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" />
                     @endif
                 </a>
-                <div class="fw-500">{{ Auth::user()->name}}</div>
             </div>
             <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                 <h6 class="dropdown-header d-flex align-items-center">

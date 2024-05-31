@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->date('date');
-            $table->time('entry_time', precision: 0);
-            $table->time('out_time', precision: 0);
-            $table->string('description');
-            $table->string('picture');
+            $table->time('entry_time', precision: 0)->nullable();
+            $table->time('out_time', precision: 0)->nullable();
+            $table->string('description')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('latitude', 128)->nullable(); 
+            $table->string('longitude', 128)->nullable();
+            $table->string('picture')->nullable();
 
             $table->timestamps();
         });

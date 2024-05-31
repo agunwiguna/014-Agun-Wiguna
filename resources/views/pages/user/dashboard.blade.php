@@ -15,7 +15,7 @@
                                 <div class="page-header-icon"><i data-feather="activity"></i></div>
                                 Dashboard
                             </h1>
-                            <div class="page-header-subtitle">Administrator Panel</div>
+                            <div class="page-header-subtitle">User Panel</div>
                         </div>
                         <div class="col-12 col-xl-auto mt-4">
                             <div class="input-group input-group-joined border-0" style="width: 16.5rem">
@@ -52,15 +52,11 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
-                                    <div class="text-white-75 small">Total User</div>
-                                    <div class="text-lg fw-bold">0</div>
+                                    <div class="text-white-75 small">Absen Masuk</div>
+                                    <div class="text-lg fw-bold">{{ $absensi->entry_time ?? '-' }}</div>
                                 </div>
-                                <i class="feather-xl text-white-50" data-feather="users"></i>
+                                <i class="feather-xl text-white-50" data-feather="log-in"></i>
                             </div>
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="">Selengkapnya</a>
-                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
                 </div>
@@ -69,15 +65,11 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
-                                    <div class="text-white-75 small">Kehadiran Hari Ini</div>
-                                    <div class="text-lg fw-bold">0</div>
+                                    <div class="text-white-75 small">Absen Pulang</div>
+                                    <div class="text-lg fw-bold">{{ $absensi->out_time ?? '-' }}</div>
                                 </div>
-                                <i class="feather-xl text-white-50" data-feather="info"></i>
+                                <i class="feather-xl text-white-50" data-feather="log-out"></i>
                             </div>
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="">Selengkapnya</a>
-                            <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
                 </div>
@@ -86,48 +78,47 @@
                 <div class="col-lg-12">
                     <div class="card card-header-actions mb-4">
                         <div class="card-header">
-                            Daftar Absen Masuk Hari Ini
+                            Daftar Absen Hari Ini
                         </div>
                         <div class="card-body">
                             {{-- List Data --}}
-                            <table class="table table-striped table-hover table-sm" id="myTable">
-                                <thead>
-                                    <tr>
-                                        <th width="10">No.</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Keterangan</th>
-                                        <th>Foto</th>
-                                        <th>Tanggal</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card card-header-actions mb-4">
-                        <div class="card-header">
-                            Daftar Absen Pulang Hari Ini
-                        </div>
-                        <div class="card-body">
-                            {{-- List Data --}}
-                            <table class="table table-striped table-hover table-sm" id="myTable">
-                                <thead>
-                                    <tr>
-                                        <th width="10">No.</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Keterangan</th>
-                                        <th>Foto</th>
-                                        <th>Tanggal</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-sm" id="myTable">
+                                    <thead>
+                                        <tr>
+                                            <th width="10" style="vertical-align: middle;">No.</th>
+                                            <th style="vertical-align: middle;">NIP</th>
+                                            <th style="vertical-align: middle;">Nama</th>
+                                            <th style="vertical-align: middle;">Jabatan</th>
+                                            <th style="vertical-align: middle;">Tanggal</th>
+                                            <th style="vertical-align: middle;">Jam <br> Masuk</th>
+                                            <th style="vertical-align: middle;">Jam <br> Pulang</th>
+                                            <th style="vertical-align: middle;">Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $no = 1;
+                                        @endphp
+                                        @forelse ($in as $row)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ $row->user->nip ?? '' }}</td>
+                                                <td>{{ $row->user->name ?? '' }}</td>
+                                                <td>{{ $row->user->position ?? '' }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($row->date)) }}</td>
+                                                <td>{{ $row->entry_time }}</td>
+                                                <td>{{ $row->out_time ?? '-' }}</td>
+                                                <td>{{ $row->description }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="8" class="text-center">Tidak ada data kehadiran hari ini</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->text('adress');
             $table->integer('radius');
             $table->string('leader_name');
-            $table->float('latitude', 10, 6); 
-            $table->float('longitude', 10, 6);
+            $table->string('latitude', 128); 
+            $table->string('longitude', 128);
             $table->timestamps();
         });
     }
