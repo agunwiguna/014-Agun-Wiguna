@@ -58,6 +58,10 @@
                                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @endif
+                            <div id="loading-overlay">
+                                <div id="loader"></div>
+                                <p id="loading-message">Sedang menyimpan data..</p>
+                            </div>
                             @if ($cek_absensi > 0)
                                 @if ($cek_pulang > 0)
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-form" style="display: none;">
@@ -66,6 +70,7 @@
                                 <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-form-success" style="display: none;">
                                     Anda berada di dalam radius yang ditentukan. Anda bisa mengisi absensi.
                                 </div>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-error" style="display: none;"></div>
                                 <div style="display: block" id="absensi">
                                     <form action="{{ route('absensi.update', $item->id) }}" method="POST" enctype="multipart/form-data" autocomplete="off" id="form-data">
                                         @csrf
@@ -163,7 +168,7 @@
         }).addTo(mymap);
 
         let marker = L.marker([{{ $instansi->latitude }}, {{ $instansi->longitude }}]).addTo(mymap)
-            .bindPopup("<b>SMA Informatika Ciamis</b>").openPopup();
+            .bindPopup("<b>{{ $instansi->name }}</b>").openPopup();
 
 
         function onLocationFound(e) {
@@ -188,12 +193,15 @@
             document.getElementById('longitude').value = lng;
 
             let userMarker = L.marker(e.latlng).addTo(mymap)
-                .bindPopup("Anda berada dalam " + userRadius + " meter dari titik ini.").openPopup();
+                .bindPopup("Lokasi Anda").openPopup();
 
         }
 
         function onLocationError(e) {
-            alert(e.message);
+            let alert = document.getElementById('alert-error')
+            document.getElementById('absensi').style.display = 'none';
+            alert.style.display = 'block';
+            alert.innerHTML = e.message;
         }
 
         L.control.locate({

@@ -47,6 +47,10 @@
                                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             @endif
+                            <div id="loading-overlay">
+                                <div id="loader"></div>
+                                <p id="loading-message">Sedang menyimpan data..</p>
+                            </div>
                             @if ($cek_absensi == 0)
                             <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-form" style="display: none;">
                                 Anda berada di luar radius yang ditentukan. Anda tidak bisa mengisi absensi.

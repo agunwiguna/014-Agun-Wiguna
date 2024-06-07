@@ -17,6 +17,19 @@ use App\Http\Controllers\User\AbsensiUserController;
 use App\Http\Controllers\User\ReportUserController;
 use App\Http\Controllers\User\SettingUserController;
 
+Route::get('/storage-link', function () { 
+    $targetFolder = base_path().'/storage/app/public'; 
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage'; 
+    symlink($targetFolder, $linkFolder); 
+});
+
+Route::get('reset', function (){
+    Artisan::call('route:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+});
+
 Route::get('/', [LoginController::class, 'index'])->middleware('guest');
 
 // Authentication
